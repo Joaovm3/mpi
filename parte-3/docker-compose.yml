@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  flask_app:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app  # Montar volume para refletir mudanças no código
+    environment:
+      - FLASK_ENV=development 
+    depends_on:
+      - ollama
+      
+  ollama:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.ollama
+    image: ollama
+    entrypoint: /tmp/run_ollama.sh
+    ports:
+      - "11434:11434"
+    environment:
+      - MODEL=llama3.2:1b  # Define o modelo a ser carregado
+    volumes:
+      - .:/app/
+      - ./ollama/ollama:/.ollama  
+    pull_policy: always
+    tty: true
+    restart: unless-stopped  
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            capabilities: ["gpu"]
+            count: all
+
