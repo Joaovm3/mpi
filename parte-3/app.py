@@ -46,7 +46,8 @@ def execute():
 def classificar():
     try:
         df = pd.read_json('dados_com_etl.json')
-  
+        df = df.head(50)
+        df.drop(columns=['song', 'link'], inplace=True)
         if 'text' not in df.columns:
             return jsonify({'error': 'Coluna "text" não encontrada no CSV'}), 400
    

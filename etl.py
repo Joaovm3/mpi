@@ -1,6 +1,6 @@
 import pandas as pd
 import re
-import json  # Import necessário para formatação avançada, se desejado
+import json
 
 # Função para remover vírgulas de todas as colunas
 def remove_commas_in_columns(df):
